@@ -5,6 +5,9 @@
 # define is_wasm
 import("//build/toolchain/wasm.gni")
 
+# define enable_profiling
+import("//build/config/profiler.gni")
+
 # =============================================================================
 # PLATFORM SELECTION
 # =============================================================================
@@ -382,7 +385,7 @@ _native_compiler_configs += [ _default_optimization_config ]
 if (symbol_level == -1) {
   # Linux is slowed by having symbols as part of the target binary, whereas
   # Mac and Windows have them separate, so in Release Linux, default them off.
-  if (is_debug || !is_linux) {
+  if (is_debug || !is_linux || enable_profiling) {
     symbol_level = 2
   } else if (is_asan || is_lsan || is_tsan || is_msan) {
     # Sanitizers require symbols for filename suppressions to work.
